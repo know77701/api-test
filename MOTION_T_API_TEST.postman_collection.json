@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "20f33fd7-7ec9-49da-8743-20687545ecf3",
 		"name": "MOTION T API TEST",
-		"description": "# 필수 설치\n\nNode.js 다운로드\n\n[https://nodejs.org/en/download](https://nodejs.org/en/download)\n\n# API\n\nMOTION_T API TEST v.1.0.0\n\n2024.03.26 \\~ 2024.05.08\n\n- newman 설치 > 완료\n- jenkins 설치 > 완료\n    - 로컬 slack 알림 > 완료\n- Ncloud 연동\n    - jenkins 설치\n    - slack 알림 연동\n        - naver works 연동가능 여부 확인\n\n---\n\nMOTION_T API TEST v.1.0.1",
+		"description": "# 필수 설치\n\nNode.js 다운로드\n\n[https://nodejs.org/en/download](https://nodejs.org/en/download)\n\n# API\n\nMOTION_T API TEST v.1.0.0\n\n2024.03.26 \\~ 2024.05.08\n\n- newman 설치 > 완료\n    \n- jenkins 설치 > 완료\n    - 로컬 slack 알림 > 완료\n        \n- Ncloud 연동\n    - jenkins 설치\n        \n    - slack 알림 연동\n        - naver works 연동가능 여부 확인\n            \n\n---\n\nMOTION_T API TEST v.1.0.1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24827265",
 		"_collection_link": "https://triupqa.postman.co/workspace/triup_QA-Workspace~82c3f0c6-65e5-4474-b313-9de92c879709/collection/24827265-20f33fd7-7ec9-49da-8743-20687545ecf3?action=share&source=collection_link&creator=24827265"
@@ -11,141 +11,6 @@
 		{
 			"name": "Q",
 			"item": [
-				{
-					"name": "예시",
-					"item": [
-						{
-							"name": "예시",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// 1안\r",
-											"const userData = {\r",
-											"    'ykiho': '22222222',\r",
-											"    'userId': 'ADMIN',\r",
-											"    'userPw': 'xmfkdldjq1!1'\r",
-											"};\r",
-											"\r",
-											"pm.request.headers.add({ key: 'Content-Type', value: 'application/x-www-form-urlencoded' });\r",
-											"\r",
-											"pm.request.body = {\r",
-											"    'mode': 'urlencoded',\r",
-											"    'urlencoded' : Object.entries(userData)\r",
-											"        .map(([key, value]) => ({ key, value })),\r",
-											"    \r",
-											"}\r",
-											"\r",
-											"// 2안\r",
-											"pm.request.headers.add({key: \"Content-Type\", value: \"multipart/form-data\"});\r",
-											"\r",
-											"pm.request.body = {\r",
-											"    mode: 'formdata',\r",
-											"    formdata: [\r",
-											"        { key: 'patNo', value: pm.collectionVariables.get('PAT_NO') },\r",
-											"        { key: 'vistSn', value: '' },\r",
-											"        { key: 'cnstSn', value: '' },\r",
-											"        { key: 'pageNo', value: '1' },\r",
-											"        { key: 'cnstImage', type: 'file', src: 'C:/Users/know7/Postman/files/페페.jpg'}\r",
-											"    ]\r",
-											"};\r",
-											"\r",
-											"\r",
-											"// 3안\r",
-											"const variables = {\r",
-											"    'searchDay' : '20240408',\r",
-											"    'searchWord' : pm.collectionVariables.get('PAT_NM')\r",
-											"}\r",
-											"\r",
-											"pm.request.headers.add({ key: 'Content-Type', value: 'application/x-www-form-urlencoded' });\r",
-											"\r",
-											"Object.keys(variables).forEach((val) =>{\r",
-											"    pm.variables.set(val, variables[val]);\r",
-											"    pm.request.url.query.add({\r",
-											"        key : val,\r",
-											"        value : pm.variables.get(val)\r",
-											"    });\r",
-											"});\r",
-											"\r",
-											"\r",
-											"// 4안\r",
-											"pm.request.body.formdata.add({key:'patNo', value: pm.collectionVariables.get('PAT_NO')})\r",
-											"pm.request.body.formdata.add({key:'memoTxt', value:''});\r",
-											"pm.request.body.formdata.add({key:'ImageTitle', value:''});\r",
-											"pm.request.body.formdata.add({key:'services', value:''});\r",
-											"// memoimage는 Type 이 file\r",
-											"pm.request.body.formdata.add({ key:'memoImage', type:'file', src: 'C:/Users/know7/Desktop/페페.jpg', name: '페페.jpg'});\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const schema = {",
-											"    'type': 'object',",
-											"    'properties': {",
-											"        'status': { 'type': 'string' },",
-											"        'result': { 'type': 'string' },",
-											"        'access_token': { 'type': 'string'}",
-											"    },",
-											"    'required': ['status','result','access_token']",
-											"};",
-											"",
-											"pm.test(\"server status 200 OK\", function() {",
-											"    pm.response.to.have.status(200);",
-											"    pm.expect(pm.response.headers.get(\"Access-Control-Allow-Credentials\")).to.be.oneOf([undefined,'false'])",
-											"    pm.expect(pm.response.headers.get(\"Access-Control-Allow-Origin\")).not.equal(pm.environment.get(\"malicious_origin\"))",
-											"    pm.environment.set('accessToken', pm.response.json().access_token);",
-											"});",
-											"",
-											"pm.test('Body status', function () {",
-											"   pm.expect(pm.response.code).to.equal(200);",
-											"});",
-											"",
-											"pm.test(\"schema validation\", () => {",
-											"    pm.response.to.have.jsonSchema(schema);",
-											"    ",
-											"});",
-											"",
-											"console.log(pm.response.headers);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Origin",
-										"value": "",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{domain}}/login",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"login"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
 				{
 					"name": "4.13 진료일자 별 수납 내역/ 수정필요",
 					"event": [
@@ -305,7 +170,7 @@
 					"response": []
 				}
 			],
-			"description": "**일정**\n\n2024\\~03\\~18 \\~\n\n**질문 리스트**\n\n- 3.4 주소검색 > API 삭제\n- 3.5 접수\n    - 오기입하여 접수 시 접수됨.\n- 4.9 진료 메모 조회 / 4.13 500에러 리턴\n- 10.4 응답값에 코드값도 같이 넘어옴\n- 5.1.2 \\~ 5.1.3 데이터 오입력/미등록 상태에서 조회 됨\n- 9.2 상담저장 불가\n    \n\n# Test 정책\n\n1. Pre-request Script / Tests 작성된 변수명 및 형식\n2. **필수 작성 목록**\n    1. 비정상값 데이터 입력 후 API 전송 시 데이터 리턴 확인\n    2. 필수값 이외 데이터 입력 후 API 전송 시 데이터 리턴 확인\n        - 필수 paramter : `A`\n        - 선택 paramter : `B`\n            - `A` 만 request로 보냈을 때 `statusCode 200` return 되고,\n            - `A` 와 `B`를 같이 보냈을 때에도 `statusCode 200` 이 return되는지 확인.\n            - 정의되지 않은 많은 양의 parameter를 보낸다던지의 테스트도 진행\n    3. 사용자 권한에 따라 다르게 동작해야 하는 경우 확인 // 예외 처리\n    4. 상태코드 체크 확인\n    5. 객체포함유무 확인//예외 처리\n    6. 데이터타입 확인\n    7. empty 유무 확인\n    8. 응답 시간 확인\n    9. 단일 API 가 아닌 다중 API 요청에 대한 CRUD 검증 플로우\n3. 응답값으로 맞출것\n4. 사진 업로드 주소 처리방법\n    1. 주소 통일  \n        C:/works/apiTest/image/TestImage**N**( n = **숫자**).jpg\n    2. 사진 업로드 필요 시 request body 값 하나 이상 존재하도록 수정\n        1. body 값 빈배열로 들어가면 사진을 받아오질 못함\n5. API 테스트 알림\n    1. newman 연동 완료\n    2. slack 연동 완료\n    3. cloud 연동 > 진행예정\n\n- Parameter fuzzing > 추후\n- SQL Injections > 추후\n- Username harvesting > 추후\n- Cross-site scripting > 추후\n- CORS > 추후\n    \n\n# 정보공유\n\nHTTP 상태 코드 정리\n\n- **1xx(정보) :** 요청을 받았으며 프로세스를 계속 진행합니다.\n- **2xx(성공) :** 요청을 성공적으로 받았으며 인식했고 수용하였습니다.\n- **3xx(리다이렉션) :** 요청 완료를 위해 추가 작업 조치가 필요합니다.\n- **4xx(클라이언트 오류) :** 요청의 문법이 잘못되었거나 요청을 처리할 수 없습니다.\n- **5xx(서버 오류) :** 서버가 명백히 유효한 요청에 대한 충족을 실패했습니다.\n    \n\n[https://hongong.hanbit.co.kr/http-상태-코드-표-1xx-5xx-전체-요약-정리/](https://hongong.hanbit.co.kr/http-%EC%83%81%ED%83%9C-%EC%BD%94%EB%93%9C-%ED%91%9C-1xx-5xx-%EC%A0%84%EC%B2%B4-%EC%9A%94%EC%95%BD-%EC%A0%95%EB%A6%AC/)\n\n---\n\n1. **Body (바디)**\n    1. 바디는 웹 요청(request)에서 사용되는 부분 중 하나, 예를 들어, 만약 당신이 웹 사이트에 로그인을 시도한다면, 아이디와 비밀번호가 바디에 들어감 바디는 요청의 일부로 서버로 보내지지만, 주소창에는 나타나지 않음\n    2. 주로 POST 요청과 함께 사용되며, POST 요청은 서버로 데이터를 보낼 때 사용됨.  \n        예를 들어, 회원가입 양식을 작성하고 제출할 때 사용하며 이때 아이디, 비밀번호, 이메일 등의 정보가 바디에 담겨 서버로 전송\n2. **Query String (쿼리 문자열)**\n    1. 쿼리 문자열은 주로 URL의 끝에 위치한 데이터 조각.  \n        이 부분은 주소창에 '?' 다음에 나타나며 쿼리 문자열은 주로 요청에 대한 매개변수를 전달할 때 사용됨. 예를 들어, 당신이 웹 사이트에서 \"검색\" 기능을 사용하면, 검색어가 쿼리 문자열에 포함되며 이 정보는 서버에게 사용자가 무엇을 찾고 있는지 알려줌\n    2. 주로 GET 요청과 함께 사용.  \n        GET 요청은 서버로 데이터를 요청할 때 사용되며, 쿼리 문자열은 URL에 붙어 있어 사용자가 어떤 데이터를 요청하는지 서버에게 알려줌.  \n        예를 들어, 웹 사이트에서 특정 제품의 정보를 보고 싶을 때, URL에 제품 번호나 이름과 같은 정보가 쿼리 문자열로 들어감.\n3. **Parameter (파라미터)**\n    1. 파라미터는 일반적으로 쿼리 문자열 내부에 있는 특정 데이터 조각을 가리킴 즉, 쿼리 문자열에서 키(key)와 값(value)으로 이루어진 하나의 조각,  \n        예를 들어, \"검색어=고양이\"라는 쿼리 문자열이 있다면, \"검색어\"가 파라미터의 키이고, \"고양이\"가 해당 파라미터의 값\n    2. 파라미터는 주로 서버로 데이터를 전달할 때 사용.  \n        주로 쿼리 문자열에 들어가지만, POST 요청의 바디에도 포함될 수 있음.  \n        예를 들어, 웹 사이트에서 검색 기능을 사용할 때, 검색어를 서버에 전달할 때 파라미터를 사용함. \"검색어=고양이\"와 같이 특정한 데이터를 서버에게 보낼 때 파라미터를 사용\n\n요약\n\n바디는 주로 POST 요청에 사용되고 데이터의 전체적인 부분을 담고\n\n쿼리 문자열은 서버로 요청을 보낼 때 사용되며,\n\n파라미터는 주로 GET 요청의 쿼리 문자열 안에 들어가며, 특정한 데이터를 서버에게 전달하기 위한 목적으로 사용\n\n---\n\n# Tests 예시\n\n- 아래와 같이 맞출것.\n    \n\n``` javascript\nconst schema = {\n    'type':'object',\n    'properties':{\n        'status' : {'type': 'string'},\n        'result' : {'type': 'string'},\n        'data' : {  'type': 'array',},\n    },\n    'required': ['status', 'result', 'data'],\n}\nconst resjson = pm.response.json();\npm.test('Check server status', function () {\n   pm.expect(pm.response.code).to.be.status(200);\n});\npm.test(\"Check returned JSON\", () =>{\n    pm.response.to.be.json;\n    pm.expect(resJson).to.be.not.empty;\n    pm.expect(resJson.status).to.equals(\"210\");\n    pm.response.to.have.jsonSchema(schema);\n});\npm.test(\"Check response time\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(600); \n});\npm.test(\"Check HTTPS protocol usage\", function() {\n    pm.expect(pm.request.url).to.match(/^https:/);\n});\n\n ```"
+			"description": "**일정**\n\n2024-03-18 \\~ 2024-05-24\n\n# 정책\n\n1. Pre-request Script / Tests 작성된 변수명 및 형식\n    \n2. **필수 작성 목록**\n    \n    1. 비정상값 데이터 입력 후 API 전송 시 데이터 리턴 확인\n        \n    2. 필수값 이외 데이터 입력 후 API 전송 시 데이터 리턴 확인\n        \n        - 필수 paramter : `A`\n            \n        - 선택 paramter : `B`\n            \n            - `A` 만 request로 보냈을 때 `statusCode 200` return 되고,\n                \n            - `A` 와 `B`를 같이 보냈을 때에도 `statusCode 200` 이 return되는지 확인.\n                \n            - 정의되지 않은 많은 양의 parameter를 보낸다던지의 테스트도 진행\n                \n    3. 사용자 권한에 따라 다르게 동작해야 하는 경우 확인 // 예외 처리\n        \n    4. 상태코드 체크 확인\n        \n    5. 객체포함유무 확인//예외 처리\n        \n    6. 데이터타입 확인\n        \n    7. empty 유무 확인\n        \n    8. 응답 시간 확인\n        \n    9. 단일 API 가 아닌 다중 API 요청에 대한 CRUD 검증 플로우\n        \n3. 응답값으로 맞출것\n    \n4. 사진 업로드 주소 처리방법\n    \n    1. 주소 통일  \n        C:/works/apiTest/image/TestImage**N**( n = **숫자**).jpg\n        \n    2. 사진 업로드 필요 시 request body 값 하나 이상 존재하도록 수정\n        \n        1. body 값 빈배열로 들어가면 사진을 받아오질 못함\n            \n5. API 테스트 알림\n    \n    1. newman 연동 완료\n        \n    2. slack 연동 완료\n        \n    3. cloud 연동 > 진행예정\n        \n\n- Parameter fuzzing > 추후\n    \n- SQL Injections > 추후\n    \n- Username harvesting > 추후\n    \n- Cross-site scripting > 추후\n    \n- CORS > 추후"
 		},
 		{
 			"name": "0. 공통확인",
