@@ -1,0 +1,3 @@
+[submodule "api_env_private"]
+	path = api_env_private
+	url = https://github.com/know77701/api_env_private.git
